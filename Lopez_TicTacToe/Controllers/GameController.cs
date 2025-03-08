@@ -20,7 +20,6 @@ namespace Lopez_TicTacToe.Controllers
             if (!gameState.MakeMove(row, col))
                 return Json(new { status = "invalid" });
 
-            // Check if the player wins first
             if (!string.IsNullOrEmpty(gameState.Winner))
             {
                 return Json(new { status = "win", winner = gameState.Winner });
@@ -28,13 +27,11 @@ namespace Lopez_TicTacToe.Controllers
 
             int aiMoveIndex = -1;
 
-            // AI plays if it's O's turn and game isn't over
             if (gameState.CurrentPlayer == "O" && gameState.Winner == "")
             {
                 aiMoveIndex = gameState.MakeAIMove();
             }
 
-            // If AI won, send response
             if (!string.IsNullOrEmpty(gameState.Winner))
             {
                 return Json(new { status = "win", winner = gameState.Winner, aiMove = aiMoveIndex });

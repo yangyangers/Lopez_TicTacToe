@@ -36,7 +36,6 @@ namespace Lopez_TicTacToe.Models
 
                 if (Winner == "")
                 {
-                    // Switch turn if game isn't over
                     CurrentPlayer = (CurrentPlayer == "X") ? "O" : "X";
                 }
                 return true;
@@ -47,7 +46,7 @@ namespace Lopez_TicTacToe.Models
         public int MakeAIMove()
         {
             if (Winner != "" || CurrentPlayer != "O")
-                return -1; // Stop AI if the game is over
+                return -1; 
 
             for (int r = 0; r < 3; r++)
             {
@@ -55,20 +54,20 @@ namespace Lopez_TicTacToe.Models
                 {
                     if (Board[r, c] == "")
                     {
-                        Board[r, c] = "O"; // AI plays
+                        Board[r, c] = "O"; 
                         CheckWin();
 
                         if (Winner == "")
                         {
-                            CurrentPlayer = "X"; // Switch turn back to player
+                            CurrentPlayer = "X"; 
                         }
 
-                        return (r * 3) + c; // Return AI's move index
+                        return (r * 3) + c; 
                     }
                 }
             }
 
-            return -1; // No move possible
+            return -1; // 
         }
 
 

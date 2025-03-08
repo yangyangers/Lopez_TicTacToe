@@ -1,6 +1,5 @@
-﻿// Initialize game variables
-let currentPlayer = "X";
-let gameMode = "multiplayer"; // Default to multiplayer
+﻿let currentPlayer = "X";
+let gameMode = "multiplayer"; 
 
 // Set up SignalR connection
 const connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
@@ -30,15 +29,12 @@ document.querySelectorAll(".cell").forEach(cell => {
     cell.addEventListener("click", function () {
         const index = parseInt(this.dataset.index);
 
-        // Check if cell is already occupied
         if (this.innerText.trim()) return;
 
         if (gameMode === "multiplayer") {
-            // In multiplayer mode, use SignalR
             connection.invoke("MakeMove", index, currentPlayer)
                 .catch(err => console.error("Error invoking MakeMove:", err));
         } else {
-            // In single player mode, use the Game controller
             singlePlayerMove(index);
         }
     });
@@ -55,7 +51,6 @@ function singlePlayerMove(index) {
         .then(data => {
             console.log("Response from server:", data);
 
-            // Update player's move
             updateBoard(index, "X");
 
             if (data.status === "win") {
@@ -70,7 +65,6 @@ function singlePlayerMove(index) {
                 setTimeout(() => {
                     updateBoard(data.aiMove, "O");
 
-                    // Check if AI wins
                     fetch("/Game/GetStats")
                         .then(response => response.json())
                         .then(stats => {
@@ -105,7 +99,6 @@ function updateStats() {
 // Handle SignalR events for multiplayer
 connection.on("ReceiveMove", (index, player) => {
     updateBoard(index, player);
-    // Switch player turn
     currentPlayer = (player === "X") ? "O" : "X";
 });
 
@@ -149,7 +142,6 @@ connection.on("ResetBoard", () => {
     currentPlayer = "X";
 });
 
-// Update the board with a player's move
 function updateBoard(index, player) {
     const cell = document.querySelector(`.cell[data-index='${index}']`);
     if (cell) {
